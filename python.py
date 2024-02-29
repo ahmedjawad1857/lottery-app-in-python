@@ -5,16 +5,16 @@ class Lottery:
     def __init__(self)->None:
         self.persons:list[dict[str,Any]] = []
         self.l1:list[int] = [1001,1002,1003,1004,1005,1006,1007,1008,1009,1010]
-
     def show_lottery_number(self)->None:
         print("Select Your Lottery Number.")  
         sleep(1)
         for i,num in enumerate(self.l1,1):
             print(f"{i}. '{num}'")
             
+            
     def select_lottery(self,number:int,username:str)->None:
 
-        for num in self.l1:
+        for num in self.l1: 
             if num == number:
                 
                 newLottery:dict[str,Any] = {"Name":username,"Lottery_Number":num}
@@ -28,7 +28,18 @@ class Lottery:
                 break
         else:
                 print("this number is not available! Please Try again.")
-                
+    def delete_lottery(self,Lottery_Number:int)->None:
+        for person in self.persons:
+          if person["Lottery_Number"] == Lottery_Number:
+            ind:int=self.persons.index(person)
+            popped:dict[str,Any] = self.persons.pop(ind)
+            self.l1.append(popped["Lottery_Number"])
+            print(f"The user whose name is {popped["Name"]} with Lottery Number '{popped["Lottery_Number"]}' is deleted.")
+            self.l1.sort()
+            print(self.l1)
+            break
+        else:
+            print(f"An error occurred")                  
      
     def withdraw_lottery(self)->None:  
         num:int = random.randint(1001,1010)
@@ -44,7 +55,8 @@ while True :
     print("====================Lottery Management System================")
     if len(app.l1) != 0:
         print("1.Choose Lottery Number")
-        print("2.Exit")
+        print("2.Delete Lottery")
+        print("3.Exit")
     
         choice:int=int(input("Select Your Choice!   "))
         match choice:
@@ -53,8 +65,10 @@ while True :
             Lottery_Num:int = int(input("Please enter your Lottery Number:   "))
             name:str = input("Please enter your Name:   ")
             app.select_lottery(Lottery_Num, name)  
-            
          case 2:
+             lotteryNumber:int = int(input("Please enter your lottery Number:"))
+             app.delete_lottery(lotteryNumber)
+         case 3:
             print("Good Bye!")
             break
          case _:
